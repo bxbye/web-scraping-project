@@ -2,12 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 
 
-
 class Book:
     def __init__(self, title, publisher, author, price) -> None:
         self.title = title
         self.publisher = publisher
-        self.author = author
+        self.writers = author
         self.price = price
 
 # base class
@@ -171,7 +170,7 @@ class KitapSepetiCategory(CategoryPage):
         # when category page dont have current page, product_list should return empty
         product_links = []
         full_url = self.base_link + category_url
-        print(f"full_category_url: {full_url}")
+        #print(f"full_category_url: {full_url}")
         # make http request, scrap html codes.
         try:
             user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
@@ -183,7 +182,7 @@ class KitapSepetiCategory(CategoryPage):
                 soup = BeautifulSoup(response.text, "html.parser")
                 # find current_url's page number
                 current_page = category_url[category_url.index("pg=")+3:]
-                print(f"current_page: {current_page}, end_page: {self.category_pagination_count}")
+                #print(f"current_page: {current_page}, end_page: {self.category_pagination_count}")
                 if(int(current_page) > self.category_pagination_count):
                     product_links = []
                 else:

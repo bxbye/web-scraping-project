@@ -4,7 +4,7 @@ base_url = "https://www.kitapsepeti.com"
 ks = KitapSepetiCategory(base_url)
 product_links = []
 page = 1
-category_url = "/cinsellik?pg="
+category_url = "/istanbul-rehberi?pg="
 ks.set_pagination_limit(f"{category_url}{page}")
 while True:
     ks_category_url = f"{category_url}{page}"
