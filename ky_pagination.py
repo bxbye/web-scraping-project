@@ -19,9 +19,9 @@ ky_bilim = KitapYurduCategory(base_url)
 product_links = []
 page = 1
 while True:
-    cocuk_egitimi_url = f"/index.php?route=product/category&page={page}&path=1_359_361&filter_in_stock=1"
+    #cocuk_egitimi_url = f"/index.php?route=product/category&page={page}&path=1_359_361&filter_in_stock=1"
     ky_category_url = f"/index.php?route=product/category&page={page}&path=1_359_369&filter_in_stock=1"
-    links = ky_bilim.get_all_product_links(cocuk_egitimi_url)
+    links = ky_bilim.get_all_product_links(ky_category_url)
     if not links:
         break
     product_links.extend(links)
