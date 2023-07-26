@@ -1,8 +1,9 @@
 # Proje Adi
 Web Kazima Test Uygulamasi
 
-##### Yazar
-Kadir KAYA
+### Yazar
+*Kadir KAYA*
+
 kadirkaya2050@gmail.com
 
 ## Kullanilan Teknolojiler
@@ -32,14 +33,22 @@ import requests
 
 ## Programin Ozellikleri
 Proje icerisinde web kazima yapilabilen 2 adet website vardir. Uygulama tasarimindan dolayi bu sayi artirilabilmektedir. Cunku her site icin 2 adet class tanimlanmistir. Yeni bir sitede kazima yapilacaksa onun icin 2 adet daha class eklenip bu islem yapilabilir.
+
 Bu 2 class; ProductPage ve CategoryPage class'laridir. Bunlar parent class'dir. Bunlardan turetilen sitelere farkli ozellikler de eklenebilir.
 CategoryPage class'i kategori sayfasinin linkini alir ve o kategorideki tum sayfalari tarar. Kategorinin altindaki tum kitap(product) linklerini toplar ve bize verir. Bunu class icindeki get_all_product_links() metoduyla yapar.
+
 ProductPage class'i ise urunun sayfasindaki html etiketlerinde kazima yapar. Urune ait tum detay bilgiler buradan kazinir. Su an sadece title, publisher, writers, price bilgileri kazinmaktadir.
 
 > kitapsepeti.com sitesinde page parametresi yanlis da olsa ilk sayfaya yonlendirdigi icin bu sitenin CategoryPage class'ina set_pagination_limit() metodu eklenmistir. Son sayfa bilgisini bu metod ile kaziyip diger islemlerde kullaniyoruz.
 
 ## Proje nasil Calistirilir
 Projenin root klasorunde 4 adet python(.py) dosyasi mevcuttur. Bunlari calistirarak istenen islemlerin gerceklestigini goruntuleyebiliriz.
+
+mongodb servisinin bu projenin calistirilmak istendigi bilgisayarda calisir halde olmasi gerekmektedir. kurulumu yukadirdaki mongodb linki uzerinden gerceklestirdikten sonra bu islem yapilabilir.
+
+```bash
+brew services start mongodb-community@6.0
+```
 
 Asagidaki komutlar projenin root klasorunde calistirilmalidir.
 
