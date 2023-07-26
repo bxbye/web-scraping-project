@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 class Book:
     def __init__(self, title, publisher, author, price) -> None:
         self.title = title
@@ -118,7 +117,7 @@ class KitapSepetiProduct(ProductPage):
             try:
                 # price
                 div_price = soup.find("span", {"class":"product-price"})
-                price = div_price.text.strip().replace(",", ".")
+                price = div_price.text.strip().replace(".","").replace(",", ".")
                 price = float(price)
                 #print(f"price: {price}")
             except:
@@ -155,10 +154,16 @@ class KitapYurduCategory(CategoryPage):
                 print(f"Error: url could't responses. status_code: {response.status_code}")
             else:
                 soup = BeautifulSoup(response.text, "html.parser")
-                product_links = [link.get("href") for link in soup.findAll("a", class_="pr-img-link")]
+                product_list_tag = soup.find("div", {"id":"product-table"})
+                if (product_list_tag):
+                    # print("Bu sayfada product list tag mevcuttur.")
+                    product_links = [link.get("href") for link in product_list_tag.findAll("a", class_="pr-img-link")]
+                else:
+                    # print("Bu sayfada product list tag mevcuttur degildir.")
+                    product_links = []
                 #print(product_links, len(product_links))
-        except:
-            print("Error accured!")
+        except Exception as e:
+            print(f"Error accured: {e}")
         # return product_links in given category_url page.
         return product_links
 # kitapsepeti.com website's category page's operations.        
@@ -181,20 +186,20 @@ class KitapSepetiCategory(CategoryPage):
             else:
                 soup = BeautifulSoup(response.text, "html.parser")
                 # find current_url's page number
-                current_page = category_url[category_url.index("pg=")+3:]
-                #print(f"current_page: {current_page}, end_page: {self.category_pagination_count}")
-                if(int(current_page) > self.category_pagination_count):
+                current_page = int(category_url[category_url.index("pg=")+3:])
+                print(f"current_page: {current_page}, end_page: {self.category_pagination_count}")
+                if (current_page > self.category_pagination_count):
                     product_links = []
                 else:
                     product_links = [link.get("href") for link in soup.select('a.image-wrapper.fl.detailLink')]
-                    #print(product_links)
                 #print(product_links, len(product_links))
-        except:
-            print("Error accured")
+        except Exception as e:
+            print(f"Error accured: {e}")
         return product_links
     # set pagination limit for last category index.
     def set_pagination_limit(self, category_url):
         full_url = self.base_link + category_url
+        print(f"set_paginationpage_url: {full_url}")
         try:
             user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
             headers = {"User-Agent": user_agent}
@@ -203,10 +208,14 @@ class KitapSepetiCategory(CategoryPage):
                 print(f"Error: url could't responses. status_code: {response.status_code}")
             else:
                 soup = BeautifulSoup(response.text, "html.parser")
+                # find pagination part
                 pagination_tag = soup.find("div", class_="productPager")
+                # if page has no pagination a tag not exist in div
                 a_tags_in_pagination = pagination_tag.findAll("a", class_="")
-                last_pagination = a_tags_in_pagination[-1].get("href")
-                end_page = last_pagination[last_pagination.index("pg=")+3:]
-                self.category_pagination_count = int(end_page)
-        except:
-            print("Error accured!")
+                if len(a_tags_in_pagination) > 0:    
+                    last_pagination = a_tags_in_pagination[-1].get("href")
+                    self.category_pagination_count = int(last_pagination[last_pagination.index("pg=")+3:])
+                else:
+                    self.category_pagination_count = 1
+        except Exception as e:
+            print(f"Error accured in let_pagination_limit(): {e}")

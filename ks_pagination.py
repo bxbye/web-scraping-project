@@ -1,10 +1,14 @@
+"""
+Yazar: Kadir KAYA
+Bu script; herhangi bir kitap kategorisi listelendiginde o sayfanin linki pg= parametresiyle beraber category_url parametresine atanirsa o kategoriye ait tum kitaplari kazima islemi yapar.
+"""
 from models.classes import KitapSepetiCategory, KitapSepetiProduct
 
 base_url = "https://www.kitapsepeti.com"
 ks = KitapSepetiCategory(base_url)
 product_links = []
 page = 1
-category_url = "/istanbul-rehberi?pg="
+category_url = f"/istanbul-rehberi?pg="
 ks.set_pagination_limit(f"{category_url}{page}")
 while True:
     ks_category_url = f"{category_url}{page}"
