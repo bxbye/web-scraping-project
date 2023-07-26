@@ -1,4 +1,0 @@
-Konu: Mongodb server indorme ve calistirma.
-Aciklama: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/ web sitesi uzerinden terminal yardimiyla mongodb indirildi. kurulum yaptiktan sonra mongodb calisir halde degildir.
-mongodb servisini calistirma gerekir. Yine yukarida verilen baglantida servisin nasil calistirilacagi bilgisi de mevcuttur. indirme ve calistirma islemlerinde brew paket yoeticisi kullanilmistir.
-
