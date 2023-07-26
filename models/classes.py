@@ -7,6 +7,13 @@ class Book:
         self.publisher = publisher
         self.writers = author
         self.price = price
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "publisher": self.publisher,
+            "writers": self.writers,
+            "price": self.price
+        }
 
 # base class
 class ProductPage:
@@ -65,7 +72,7 @@ class KitapYurduProduct(ProductPage):
             try:
                 # price
                 div_price = soup.find("div", class_="price__item")
-                price = div_price.text.strip().replace(",", ".")
+                price = div_price.text.strip().replace(".","").replace(",", ".")
                 price = float(price)
                 #print(f"price: {price}")
             except:
@@ -154,13 +161,18 @@ class KitapYurduCategory(CategoryPage):
                 print(f"Error: url could't responses. status_code: {response.status_code}")
             else:
                 soup = BeautifulSoup(response.text, "html.parser")
-                product_list_tag = soup.find("div", {"id":"product-table"})
+                product_list_tag = soup.find("div", {"id":"product-table"})# if exist its ok(searched item)
                 if (product_list_tag):
                     # print("Bu sayfada product list tag mevcuttur.")
                     product_links = [link.get("href") for link in product_list_tag.findAll("a", class_="pr-img-link")]
                 else:
-                    # print("Bu sayfada product list tag mevcuttur degildir.")
-                    product_links = []
+                    # print("Bu sayfada product-table tag mevcuttur degildir.")
+                    product_not_found_tag = soup.find("div", class_= "product-not-found")
+                    #print(product_not_found_tag)
+                    if product_not_found_tag:
+                        product_links = []
+                    else:
+                        product_links = [link.get("href") for link in soup.findAll("a", class_="pr-img-link")]
                 #print(product_links, len(product_links))
         except Exception as e:
             print(f"Error accured: {e}")
